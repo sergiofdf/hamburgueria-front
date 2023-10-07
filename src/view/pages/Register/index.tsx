@@ -33,8 +33,8 @@ export function Register() {
         <Input
           type="text"
           placeholder='Celular'
-          error={errors.phone?.message}
-          {...register('phone')}
+          error={errors.phone_number?.message}
+          {...register('phone_number')}
         />
         <Button type="submit">CADASTRAR</Button>
         <div className="text-start w-full">

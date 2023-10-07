@@ -1,5 +1,5 @@
 import { ComponentProps } from 'react';
-import { cn } from '../../utils/cn';
+import { cn } from '../../app/utils/cn';
 
 interface ButtonProps extends ComponentProps<'button'>{}
 

@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { httpClient } from '../../../app/services/httpClient';
 
 const schema = z.object({
   email: z.string().min(1, 'E-mail é obrigatório').email('Informa um e-mail válido'),
@@ -18,8 +19,8 @@ export function useLoginController() {
     resolver: zodResolver(schema),
   });
 
-  const handleSubmit = hookFormHandleSubmit((data) => {
-    console.log('Chama a API com: ', data);
+  const handleSubmit = hookFormHandleSubmit(async (data) => {
+    await httpClient.post('/login', data);
   });
 
   return { handleSubmit, register, errors };
