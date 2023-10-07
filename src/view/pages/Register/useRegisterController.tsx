@@ -1,7 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { authService } from '../../../app/services/authService';
+import { SignupParams, authService } from '../../../app/services/authService';
+import { useMutation } from 'react-query';
+import { toast } from 'react-hot-toast';
 
 const schema = z.object({
   name: z.string().min(1, 'Nome é obrigatório'),
@@ -21,10 +23,20 @@ export function useRegisterController() {
     resolver: zodResolver(schema),
   });
 
-  const handleSubmit = hookFormHandleSubmit(async (data) => {
-    const responseData = await authService.signup(data);
-    console.log(responseData);
+  const { mutateAsync, isLoading } = useMutation({
+    mutationFn: async (params: SignupParams) => {
+      return authService.signup(params);
+    },
   });
 
-  return { handleSubmit, register, errors };
+  const handleSubmit = hookFormHandleSubmit(async (params) => {
+    try {
+      await mutateAsync(params);
+      toast.success('Usuário cadastrado com sucesso.');
+    } catch (error) {
+      toast.error('Ocorreu um erro no registro do usuário.');
+    }
+  });
+
+  return { handleSubmit, register, errors, isLoading };
 }

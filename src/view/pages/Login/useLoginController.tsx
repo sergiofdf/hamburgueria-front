@@ -1,7 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { httpClient } from '../../../app/services/httpClient';
+import { useMutation } from 'react-query';
+import { SigninParams, authService } from '../../../app/services/authService';
+import toast from 'react-hot-toast';
 
 const schema = z.object({
   email: z.string().min(1, 'E-mail é obrigatório').email('Informa um e-mail válido'),
@@ -19,9 +21,19 @@ export function useLoginController() {
     resolver: zodResolver(schema),
   });
 
-  const handleSubmit = hookFormHandleSubmit(async (data) => {
-    await httpClient.post('/login', data);
+  const { mutateAsync, isLoading } = useMutation({
+    mutationFn: async (params: SigninParams) => {
+      return authService.signin(params);
+    },
   });
 
-  return { handleSubmit, register, errors };
+  const handleSubmit = hookFormHandleSubmit(async (params) => {
+    try {
+      await mutateAsync(params);
+    } catch (error) {
+      toast.error('Usuário/senha inválido.');
+    }
+  });
+
+  return { handleSubmit, register, errors, isLoading };
 }

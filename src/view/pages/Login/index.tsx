@@ -4,7 +4,7 @@ import { Input } from '../../components/Input';
 import { useLoginController } from './useLoginController';
 
 export function Login() {
-  const { handleSubmit, register, errors } = useLoginController();
+  const { handleSubmit, register, errors, isLoading } = useLoginController();
   return (
     <div className="flex flex-col items-center gap-8">
       <h1 className="text-center text-3xl font-bold text-white ">Entre com seu e-mail e senha para acessar sua conta</h1>
@@ -32,7 +32,7 @@ export function Login() {
           <p className="text-white">Ainda não é cadastrado?</p>
           <Link to="/register" className="text-red-500">Clique aqui para criar novo cadastro</Link>
         </div>
-        <Button className="mt-2" type="submit">ENTRAR</Button>
+        <Button className='mt-2 w-full' isLoading={isLoading} type="submit">ENTRAR</Button>
       </form>
     </div>
   );
