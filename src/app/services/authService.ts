@@ -1,4 +1,4 @@
-import { Roles } from '../models/Roles';
+import { Role } from '../models/Roles';
 import { httpClient } from './httpClient';
 
 export interface SignupParams {
@@ -13,7 +13,7 @@ interface SignupResponse {
   email: string;
   phone_number: string;
   user_active: boolean,
-  roles: [Roles]
+  roles: [Role]
   created_at: string;
   updated_at: string;
 }

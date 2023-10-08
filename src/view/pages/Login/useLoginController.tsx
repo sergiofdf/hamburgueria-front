@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { useMutation } from 'react-query';
 import { SigninParams, authService } from '../../../app/services/authService';
 import toast from 'react-hot-toast';
+import { useAuth } from '../../../app/hooks/useAuth';
 
 const schema = z.object({
   email: z.string().min(1, 'E-mail é obrigatório').email('Informa um e-mail válido'),
@@ -27,9 +28,14 @@ export function useLoginController() {
     },
   });
 
+  const { signIn } = useAuth();
+
   const handleSubmit = hookFormHandleSubmit(async (params) => {
     try {
-      await mutateAsync(params);
+      const { access_token } = await mutateAsync(params);
+
+      signIn(access_token);
+
     } catch (error) {
       toast.error('Usuário/senha inválido.');
     }
