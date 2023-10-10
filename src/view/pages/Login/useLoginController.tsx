@@ -14,12 +14,13 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export function useLoginController() {
+
   const {
     register,
-    handleSubmit: hookFormHandleSubmit,
+    handleSubmit: hookFormSubmit,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema)
   });
 
   const { mutateAsync, isLoading } = useMutation({
@@ -30,7 +31,7 @@ export function useLoginController() {
 
   const { signIn } = useAuth();
 
-  const handleSubmit = hookFormHandleSubmit(async (params) => {
+  const handleSubmit = hookFormSubmit(async (params) => {
     try {
       const { access_token } = await mutateAsync(params);
 

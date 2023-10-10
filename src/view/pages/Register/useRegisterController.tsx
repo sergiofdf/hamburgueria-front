@@ -16,7 +16,7 @@ type FormData = z.infer<typeof schema>;
 
 export function useRegisterController() {
   const {
-    handleSubmit: hookFormHandleSubmit,
+    handleSubmit: hookFormSubmit,
     register,
     formState: { errors },
   } = useForm<FormData>({
@@ -29,7 +29,7 @@ export function useRegisterController() {
     },
   });
 
-  const handleSubmit = hookFormHandleSubmit(async (params) => {
+  const handleSubmit = hookFormSubmit(async (params) => {
     try {
       await mutateAsync(params);
       toast.success('Usuário cadastrado com sucesso.');
