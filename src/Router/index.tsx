@@ -3,11 +3,11 @@ import { AuthGuard } from './AuthGuard';
 import { Login } from '../view/pages/Login';
 import { Register } from '../view/pages/Register';
 import { AuthLayout } from '../view/layouts/AuthLayout';
-import { Cozinha } from '../view/pages/Dashboard/MainContents/Cozinha';
 import { Header } from '../view/components/Header';
-import { Operacao } from '../view/pages/Dashboard/MainContents/Operacao';
-import { Financeiro } from '../view/pages/Dashboard/MainContents/Financeiro';
-import { Manutencao } from '../view/pages/Dashboard/MainContents/Manutencao';
+import { Operacao } from '../view/pages/Dashboard/DashPages/Operacao';
+import { Cozinha } from '../view/pages/Dashboard/DashPages/Cozinha';
+import { Financeiro } from '../view/pages/Dashboard/DashPages/Financeiro';
+import { Manutencao } from '../view/pages/Dashboard/DashPages/Manutencao';
 
 export function Router () {
 
