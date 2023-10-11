@@ -1,3 +1,4 @@
+import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 interface OrdersCardProps{
   ProgressText: string;
   total : number;
@@ -24,7 +25,7 @@ export function OrdersCard( {ProgressText, total, orders} : OrdersCardProps) {
           <tr className="flex justify-between text-center" key={order.id}>
             <td className="w-[100px]">{order.id}</td>
             <td className="w-[100px]">{order.value}</td>
-            <td className="w-[100px]">🔎</td>
+            <td className="w-[100px] flex justify-center"><button><MagnifyingGlassIcon className='h-6 w-6 hover:cursor-pointer bg-green-500 rounded-sm'/></button></td>
           </tr>
         ))}
       </table>
