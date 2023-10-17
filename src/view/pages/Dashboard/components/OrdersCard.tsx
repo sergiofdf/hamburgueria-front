@@ -2,10 +2,10 @@ import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 interface OrdersCardProps{
   ProgressText: string;
   total : number;
-  orders: [{
+  orders: {
     id: number;
     value: string;
-  }]
+  }[];
 }
 
 export function OrdersCard( {ProgressText, total, orders} : OrdersCardProps) {
@@ -16,18 +16,22 @@ export function OrdersCard( {ProgressText, total, orders} : OrdersCardProps) {
         <p>Total: <span>{total}</span></p>
       </header>
       <table className="text-white text-lg px-6 block">
-        <tr className="flex justify-between text-center">
-          <th className="w-[100px]"># </th>
-          <th className="w-[100px]">Valor</th>
-          <th className="w-[100px]">Ação</th>
-        </tr>
-        {orders.map(order => (
-          <tr className="flex justify-between text-center" key={order.id}>
-            <td className="w-[100px]">{order.id}</td>
-            <td className="w-[100px]">{order.value}</td>
-            <td className="w-[100px] flex justify-center"><button><MagnifyingGlassIcon className='h-6 w-6 hover:cursor-pointer bg-green-500 rounded-sm'/></button></td>
+        <thead className="w-full">
+          <tr className="flex justify-between text-center">
+            <th className="w-[100px]"># </th>
+            <th className="w-[100px]">Valor</th>
+            <th className="w-[100px]">Ação</th>
           </tr>
-        ))}
+        </thead>
+        <tbody className="w-full">
+          {orders.map(order => (
+            <tr className="flex justify-between text-center" key={order.id}>
+              <td className="w-[100px]">{order.id}</td>
+              <td className="w-[100px]">{order.value}</td>
+              <td className="w-[100px] flex justify-center"><button><MagnifyingGlassIcon className='h-6 w-6 hover:cursor-pointer bg-green-500 rounded-sm'/></button></td>
+            </tr>
+          ))}
+        </tbody>
       </table>
     </div>
   );
