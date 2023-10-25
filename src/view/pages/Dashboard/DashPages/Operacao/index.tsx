@@ -17,9 +17,6 @@ export function Operacao() {
       id: order.orderId,
       value: formatCurrency(order.total)};});
 
-  console.log(cardValuesEmAnalise);
-
-
   const hasOrders = orders.length > 0;
 
   return(
