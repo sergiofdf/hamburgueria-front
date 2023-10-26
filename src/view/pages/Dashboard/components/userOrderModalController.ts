@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { ordersService } from '../../../../app/services/ordersService';
 
-export function useOrdersCardController(id: number){
+export function userOrderModalController(id: number){
   if(id) {
     const { data, isFetching } = useQuery({
       queryKey: ['ordersid', id.toString()],

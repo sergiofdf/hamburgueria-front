@@ -20,9 +20,13 @@ export function OrdersCard( {ProgressText, total, orders} : OrdersCardProps) {
     setIsModalVisible(true);
   }
 
+  async function handleCloseModal() {
+    setIsModalVisible(false);
+  }
+
   return(
     <div className="border-2 border-white rounded-lg py-5 w-[300px] sm:w-[420px] 2xl:w-[490px]">
-      <OrderModal visible={isModalVisible} orderId={modalData}/>
+      <OrderModal visible={isModalVisible} orderId={modalData} onClose={handleCloseModal}/>
       <header className="flex justify-between items-center text-amber-400 px-4 text-2xl font-bold">
         <p>{ProgressText}</p>
         <p>Total: <span>{total}</span></p>
