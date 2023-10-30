@@ -1,14 +1,18 @@
 import { Cross2Icon } from '@radix-ui/react-icons';
 import { Modal } from '../../../components/Modal';
 import { userOrderModalController } from './userOrderModalController';
+import { formatCurrency } from '../../../../app/utils/formatCurrency';
+import { Button } from '../../../components/Button';
 
 interface OrderModalProps {
   visible: boolean;
   orderId: number | undefined;
   onClose?(): void;
+  onCancelOrder(): Promise<void>;
+  isLoading: boolean;
 }
 
-export function OrderModal({ visible, orderId, onClose }: OrderModalProps) {
+export function OrderModal({ visible, orderId, onClose, onCancelOrder, isLoading }: OrderModalProps) {
 
   if(!visible || !orderId){
     return null;
@@ -19,8 +23,8 @@ export function OrderModal({ visible, orderId, onClose }: OrderModalProps) {
   return (
     <Modal open={visible} onClose={onClose}>
       {order?.orderId &&
-      <div>
-        <header className='flex items-center justify-between'>
+      <div className='text-gray-800 font-bold text-lg space-y-6'>
+        <header className='flex items-center justify-between text-2xl'>
           <span>Pedido Número: {order.orderId}</span>
           <button
             className='h-8 w-8 flex items-center justify-center bg-red-500 rounded-sm'
@@ -29,18 +33,25 @@ export function OrderModal({ visible, orderId, onClose }: OrderModalProps) {
             <Cross2Icon className='h-8 w-8 text-white'/>
           </button>
         </header>
-        <span>Status: {order.status}</span>
+        <span className='block'>Status: {order.status}</span>
         {order.orderProduct.map((product) => (
           <div key={product.orderProductId}>
             <div className='flex items-center justify-between'>
-              <p>{product.quantity}</p>
+              <img src={`http://localhost:3000/products/getImage/${product.product.productId}`} alt={product.product.name} width="24px"/>
+              <p>{product.quantity}x</p>
               <p>{product.product.name}</p>
-              <p>{product.quantity * product.product.price}</p>
+              <p>{formatCurrency(product.quantity * product.product.price)}</p>
             </div>
-            <p>{product.product.price}</p>
           </div>
         ))}
-        <span>{order.total}</span>
+        <div className='flex items-center justify-between'>
+          <p>Total</p>
+          <span>{formatCurrency(order.total)}</span>
+        </div>
+        <div className='flex items-center justify-around'>
+          <Button className='w-[136px] h-[48px]' disabled={isLoading}>Aprovar</Button>
+          <Button className='w-[136px] h-[48px] bg-red-500 hover:bg-red-400' onClick={onCancelOrder} disabled={isLoading}>Cancelar</Button>
+        </div>
       </div>
       }
 

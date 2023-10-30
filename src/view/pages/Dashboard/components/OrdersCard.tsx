@@ -1,6 +1,7 @@
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import { OrderModal } from './OrderModal';
 import { useState } from 'react';
+import { ordersService } from '../../../../app/services/ordersService';
 interface OrdersCardProps{
   ProgressText: string;
   total : number;
@@ -8,15 +9,17 @@ interface OrdersCardProps{
     id: number;
     value: string;
   }[];
+  onCancelOrder:(orderId: number) => void;
 }
 
-export function OrdersCard( {ProgressText, total, orders} : OrdersCardProps) {
+export function OrdersCard( {ProgressText, total, orders, onCancelOrder} : OrdersCardProps) {
 
   const [ isModalVisible, setIsModalVisible ] = useState(false);
-  const [ modalData, setModalData ] = useState<number | undefined>(undefined);
+  const [ selectedOrder, setSelectedOrder ] = useState<number | undefined>(undefined);
+  const [ isLoading, setIsLoading ] = useState(false);
 
   async function handleOpenModal(id: number) {
-    setModalData(id);
+    setSelectedOrder(id);
     setIsModalVisible(true);
   }
 
@@ -24,9 +27,23 @@ export function OrdersCard( {ProgressText, total, orders} : OrdersCardProps) {
     setIsModalVisible(false);
   }
 
+  async function handleCancelOrder(){
+    setIsLoading(true);
+
+    await new Promise(resolve => setTimeout(resolve, 3000));
+
+    await ordersService.cancelOrder(selectedOrder!);
+
+    onCancelOrder(selectedOrder!);
+
+    setIsLoading(false);
+
+    setIsModalVisible(false);
+  }
+
   return(
     <div className="border-2 border-white rounded-lg py-5 w-[300px] sm:w-[420px] 2xl:w-[490px]">
-      <OrderModal visible={isModalVisible} orderId={modalData} onClose={handleCloseModal}/>
+      <OrderModal visible={isModalVisible} orderId={selectedOrder} onClose={handleCloseModal} onCancelOrder={handleCancelOrder} isLoading={isLoading}/>
       <header className="flex justify-between items-center text-amber-400 px-4 text-2xl font-bold">
         <p>{ProgressText}</p>
         <p>Total: <span>{total}</span></p>

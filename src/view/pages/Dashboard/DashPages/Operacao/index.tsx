@@ -1,14 +1,30 @@
-import { OrderStatus } from '../../../../../app/entities/Order';
+import { useEffect, useState } from 'react';
+import { Order, OrderStatus } from '../../../../../app/entities/Order';
 import { formatCurrency } from '../../../../../app/utils/formatCurrency';
 import { OrdersCard } from '../../components/OrdersCard';
-import { useOperacaoController } from './useOperacaoController';
+//import { useOperacaoController } from './useOperacaoController';
+import { ordersService } from '../../../../../app/services/ordersService';
 
 export function Operacao() {
+  const [ orders, setOrders ] = useState<Order[]>([]);
+  const [ isLoading, setIsLoading ] = useState(false);
 
-  const {
-    orders,
-    isLoading
-  } = useOperacaoController();
+  useEffect(() => {
+    // const {
+    //   orders,
+    //   isLoading
+    // } = useOperacaoController();
+
+    setIsLoading(true);
+    ordersService.listOrders().then( (data) => {
+      setOrders(data);
+      setIsLoading(false);
+    });
+  }, []);
+
+  function handleCancelOrder(orderId: number) {
+    setOrders((prevState) => prevState.filter( order => order.orderId !== orderId));
+  }
 
   const ordersEmAnalise = orders.filter( order => order.status == OrderStatus.WAITING_EVALUATION );
 
@@ -28,6 +44,7 @@ export function Operacao() {
               ProgressText='Em análise'
               total={ordersEmAnalise.length}
               orders={[...cardValuesEmAnalise]}
+              onCancelOrder={handleCancelOrder}
             />
           </div>
           <div>
@@ -35,6 +52,7 @@ export function Operacao() {
               ProgressText='Em análise'
               total={10}
               orders={[{id: 200100, value: 'R$50,00'}]}
+              onCancelOrder={handleCancelOrder}
             />
           </div>
           <div>
@@ -42,6 +60,7 @@ export function Operacao() {
               ProgressText='Em análise'
               total={10}
               orders={[{id: 200100, value: 'R$50,00'}]}
+              onCancelOrder={handleCancelOrder}
             />
           </div>
           <div>
@@ -49,6 +68,7 @@ export function Operacao() {
               ProgressText='Em análise'
               total={10}
               orders={[{id: 200100, value: 'R$50,00'}]}
+              onCancelOrder={handleCancelOrder}
             />
           </div>
           <div>
@@ -56,6 +76,7 @@ export function Operacao() {
               ProgressText='Em análise'
               total={10}
               orders={[{id: 200100, value: 'R$50,00'}]}
+              onCancelOrder={handleCancelOrder}
             />
           </div>
           <div>
@@ -63,6 +84,7 @@ export function Operacao() {
               ProgressText='Em análise'
               total={10}
               orders={[{id: 200100, value: 'R$50,00'}]}
+              onCancelOrder={handleCancelOrder}
             />
           </div>
         </div>
