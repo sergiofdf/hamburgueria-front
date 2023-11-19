@@ -1,6 +1,6 @@
 import { Cross2Icon } from '@radix-ui/react-icons';
 import { Modal } from '../../../components/Modal';
-import { userOrderModalController } from './userOrderModalController';
+import { useOrderModalController } from './useOrderModalController';
 import { formatCurrency } from '../../../../app/utils/formatCurrency';
 import { Button } from '../../../components/Button';
 
@@ -8,17 +8,11 @@ interface OrderModalProps {
   visible: boolean;
   orderId: number | undefined;
   onClose?(): void;
-  onCancelOrder(): Promise<void>;
-  isLoading: boolean;
 }
 
-export function OrderModal({ visible, orderId, onClose, onCancelOrder, isLoading }: OrderModalProps) {
+export function OrderModal({ orderId, visible, onClose }: OrderModalProps) {
 
-  if(!visible || !orderId){
-    return null;
-  }
-
-  const { order } = userOrderModalController(orderId);
+  const { order, isLoading, handleCancelOrder, handleUpdateStatus } = useOrderModalController({id: orderId, onClose});
 
   return (
     <Modal open={visible} onClose={onClose}>
@@ -49,8 +43,8 @@ export function OrderModal({ visible, orderId, onClose, onCancelOrder, isLoading
           <span>{formatCurrency(order.total)}</span>
         </div>
         <div className='flex items-center justify-around'>
-          <Button className='w-[136px] h-[48px]' disabled={isLoading}>Aprovar</Button>
-          <Button className='w-[136px] h-[48px] bg-red-500 hover:bg-red-400' onClick={onCancelOrder} disabled={isLoading}>Cancelar</Button>
+          <Button className='w-[136px] h-[48px]' disabled={isLoading} onClick={handleUpdateStatus}>Aprovar</Button>
+          <Button className='w-[136px] h-[48px] bg-red-500 hover:bg-red-400' onClick={handleCancelOrder} disabled={isLoading}>Cancelar</Button>
         </div>
       </div>
       }

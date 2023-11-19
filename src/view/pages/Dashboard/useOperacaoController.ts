@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { ordersService } from '../../../../../app/services/ordersService';
+import { ordersService } from '../../../app/services/ordersService';
 
 export function useOperacaoController(){
   const { data, isFetching, isInitialLoading, refetch } = useQuery({
     queryKey: ['orders'],
-    queryFn: () => ordersService.listOrders(),
+    queryFn: ordersService.listOrders,
   });
   return {
     orders: data ?? [],
