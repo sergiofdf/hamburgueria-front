@@ -1,5 +1,5 @@
 /* eslint-disable no-inner-declarations */
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ordersService } from '../../../../app/services/ordersService';
 import toast from 'react-hot-toast';
 import { OrderStatus } from '../../../../app/entities/Order';
@@ -15,13 +15,20 @@ export function useOrderModalController( {id, onClose}: UseOrderModalControllerP
     const { data, isFetching } = useQuery({
       queryKey: ['ordersid', id.toString()],
       queryFn: () => ordersService.findOneOrder(id),
+      cacheTime: Infinity,
     });
 
     const queryClient = useQueryClient();
 
+    const { isLoading: isLoadingCancel, mutateAsync: cancelOrder } = useMutation(ordersService.cancelOrder);
+
+    const { isLoading: isLoadingApproval, mutateAsync: approveOrder } = useMutation(ordersService.updateOrderStatus);
+
     async function handleCancelOrder() {
       try {
-        await ordersService.cancelOrder(id!);
+
+        await cancelOrder(id!);
+        // await ordersService.cancelOrder(id!);
 
         queryClient.invalidateQueries({ queryKey: ['orders'] });
         toast.success('Pedido cancelado com sucesso!');
@@ -35,8 +42,7 @@ export function useOrderModalController( {id, onClose}: UseOrderModalControllerP
 
     async function handleUpdateStatus() {
       try {
-        await ordersService.updateOrderStatus(id!, OrderStatus.IN_PROGRESS);
-
+        await approveOrder({ id: id!, orderStatus: OrderStatus.IN_PROGRESS});
         queryClient.invalidateQueries({ queryKey: ['orders'] });
         toast.success('Pedido aprovado com sucesso!');
         onClose?.();
@@ -51,7 +57,9 @@ export function useOrderModalController( {id, onClose}: UseOrderModalControllerP
       order: data ?? undefined,
       isLoading: isFetching,
       handleCancelOrder,
-      handleUpdateStatus
+      handleUpdateStatus,
+      isLoadingCancel,
+      isLoadingApproval
     };
   }
 

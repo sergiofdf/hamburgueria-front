@@ -12,9 +12,19 @@ export interface Order {
 
 export enum OrderStatus {
   WAITING_EVALUATION = 'WAITING_EVALUATION',
-  REPROVED = 'REPROVED',
+  WAITING_PAYMENT = 'WAITING_PAYMENT',
   CANCELLED = 'CANCELLED',
   IN_PROGRESS = 'IN_PROGRESS',
   IN_TRANSPORT = 'IN_TRANSPORT',
   FINISHED = 'FINISHED',
 }
+
+
+export const orderStatusConversion = [
+  { orderStatusCancelEnum: OrderStatus.WAITING_EVALUATION, orderStatusPortugues: 'Em Análise'},
+  { orderStatusCancelEnum: OrderStatus.WAITING_PAYMENT, orderStatusPortugues: 'Confirmando Pagamento'},
+  { orderStatusCancelEnum: OrderStatus.CANCELLED, orderStatusPortugues: 'Cancelado'},
+  { orderStatusCancelEnum: OrderStatus.IN_PROGRESS, orderStatusPortugues: 'Em Preparo'},
+  { orderStatusCancelEnum: OrderStatus.IN_TRANSPORT, orderStatusPortugues: 'Em Transporte'},
+  { orderStatusCancelEnum: OrderStatus.FINISHED, orderStatusPortugues: 'Finalizado'}
+];

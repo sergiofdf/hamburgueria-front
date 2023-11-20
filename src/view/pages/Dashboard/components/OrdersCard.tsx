@@ -25,7 +25,7 @@ export function OrdersCard( {ProgressText, total, orders} : OrdersCardProps) {
   }
 
   return(
-    <div className="border-2 border-white rounded-lg py-5 w-[300px] sm:w-[420px] 2xl:w-[490px]">
+    <div className="border-2 border-white rounded-lg py-5 w-[300px] sm:w-[420px] 2xl:w-[490px] h-60 overflow-y-scroll no-scrollbar">
       <OrderModal visible={isModalVisible} orderId={selectedOrder} onClose={handleCloseModal} />
       <header className="flex justify-between items-center text-amber-400 px-4 text-2xl font-bold">
         <p>{ProgressText}</p>
