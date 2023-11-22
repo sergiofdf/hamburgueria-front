@@ -28,7 +28,6 @@ export function useOrderModalController( {id, onClose}: UseOrderModalControllerP
       try {
 
         await cancelOrder(id!);
-        // await ordersService.cancelOrder(id!);
 
         queryClient.invalidateQueries({ queryKey: ['orders'] });
         toast.success('Pedido cancelado com sucesso!');

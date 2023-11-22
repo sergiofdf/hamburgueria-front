@@ -4,6 +4,8 @@ import { Order } from '../../../../app/entities/Order';
 import { OrderProduct } from '../../../../app/entities/OrderProduct';
 import { Button } from '../../../components/Button';
 import { Checkbox } from '../../../components/Checkbox';
+import { useOrderDetailController } from './useOrderDetailController';
+import { Spinner } from '../../../components/Spinner';
 
 interface OrderDetailProps{
   order: Order;
@@ -15,6 +17,8 @@ interface ProductsByCategory{
 }
 
 export function OrderDetail( {order}: OrderDetailProps){
+
+  const { handleCancelOrder, handleFinishPreparation, isLoadingCancel, isLoadingFinishing } = useOrderDetailController({id: order.orderId,});
 
   const [ isAllChecked, setIsAllChecked ] = useState(false);
   const [ counter, setCounter ] = useState(0);
@@ -48,7 +52,6 @@ export function OrderDetail( {order}: OrderDetailProps){
 
   }
 
-
   return (
     <div className="border-2 border-white rounded-lg py-5 w-[300px] sm:w-[490px]">
       <header className="flex items-center justify-around text-amber-400 text-2xl font-bold">
@@ -79,11 +82,11 @@ export function OrderDetail( {order}: OrderDetailProps){
       ))}
 
       <div className='flex items-center justify-around mt-8'>
-        <Button className='w-[136px] h-[48px]' disabled={!isAllChecked}>
-              Finalizar
+        <Button className='w-[136px] h-[48px]' disabled={!isAllChecked || isLoadingCancel} onClick={handleFinishPreparation}>
+          {isLoadingFinishing ? <Spinner className='w-6 h-6 fill-green-600'/> : 'Finalizar'}
         </Button>
-        <Button className='w-[136px] h-[48px] bg-red-500 hover:bg-red-400'>
-            Cancelar
+        <Button className='w-[136px] h-[48px] bg-red-500 hover:bg-red-400' onClick={handleCancelOrder} disabled={isLoadingFinishing}>
+          {isLoadingCancel? <Spinner className='w-6 h-6 fill-red-500'/> : 'Cancelar'}
         </Button>
       </div>
     </div>
