@@ -7,6 +7,7 @@ export interface OrderProduct {
     productId: number;
     name: string;
     price: number;
-    category: Category
+    category: Category;
   }
+  finished?: boolean;
 }
