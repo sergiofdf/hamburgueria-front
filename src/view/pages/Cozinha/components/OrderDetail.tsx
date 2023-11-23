@@ -60,16 +60,16 @@ export function OrderDetail( {order}: OrderDetailProps){
       </header>
       {productsByCategories.map(productsByCategory => (
         <table key={productsByCategory.category.categoryId} className="text-white text-lg w-full">
-          <thead className="w-full flex items-center justify-between text-amber-400 text-lg font-bold p-4">
+          <thead className="w-full flex items-center justify-between text-amber-400 text-base sm:text-lg sm:font-bold py-4 sm:px-4">
             <tr className="w-full flex items-center justify-between">
               <th className="w-[100px] text-center">{productsByCategory.category.name}</th>
               <th className="w-[100px] text-center">Qt</th>
               <th className="w-[100px] text-center">CheckList</th>
             </tr>
           </thead>
-          <tbody className="w-full">
+          <tbody className="w-full flex items-center justify-between sm:px-4">
             {productsByCategory.products.map( orderProduct => (
-              <tr key={orderProduct.orderProductId} className="flex items-center justify-between px-4">
+              <tr key={orderProduct.orderProductId} className="flex items-center justify-between sm:w-full">
                 <td className="w-[100px] text-center">{orderProduct.product.name}</td>
                 <td className="w-[100px] text-center">{orderProduct.quantity}</td>
                 <td className="w-[100px] flex items-center justify-center" >

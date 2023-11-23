@@ -18,9 +18,9 @@ export function Header() {
 
   return(
     <>
-      <header className='w-full h-[112px] flex justify-between items-center sm:px-8 px-2'>
-        <Logo className='md:h-20 sm:h-16 h-6 '/>
-        <div className='flex justify-between items-center lg:w-[50%] sm:w-[70%] w-[90%] font-bold sm:text-base md:text-2xl text-xs'>
+      <header className='w-full h-[112px] block sm:flex sm:justify-between sm:items-center sm:px-8 px-2'>
+        <Logo className='m-4 sm:m-0 md:h-20 sm:h-16 h-6 '/>
+        <div className='flex justify-around sm:justify-between items-center lg:w-[50%] sm:w-[70%] w-full font-bold sm:text-base md:text-2xl text-xs'>
           <Link to='/'>
             <span
               className={operacaoActive ? 'text-red-500' : 'text-white'} onClick={()=>{

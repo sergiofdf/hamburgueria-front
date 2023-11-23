@@ -57,9 +57,11 @@ export function OrderModal({ orderId, visible, onClose }: OrderModalProps) {
               {isLoadingApproval ? <Spinner className='w-6 h-6 fill-green-600'/> : 'Aprovar'}
             </Button>
           }
-          <Button className='w-[136px] h-[48px] bg-red-500 hover:bg-red-400' onClick={handleCancelOrder} disabled={isLoadingApproval}>
-            {isLoadingCancel ? <Spinner className='w-6 h-6 fill-red-500'/> : 'Cancelar'}
-          </Button>
+          {order.status != OrderStatus.CANCELLED &&
+            <Button className='w-[136px] h-[48px] bg-red-500 hover:bg-red-400' onClick={handleCancelOrder} disabled={isLoadingApproval}>
+              {isLoadingCancel ? <Spinner className='w-6 h-6 fill-red-500'/> : 'Cancelar'}
+            </Button>
+          }
         </div>
       </div>
       }

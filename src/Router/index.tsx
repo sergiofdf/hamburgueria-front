@@ -5,9 +5,9 @@ import { Register } from '../view/pages/Register';
 import { AuthLayout } from '../view/layouts/AuthLayout';
 import { Header } from '../view/components/Header';
 import { Operacao } from '../view/pages/Dashboard';
-import { Financeiro } from '../view/pages/Financeiro/Financeiro';
 import { Manutencao } from '../view/pages/Manutencao/Manutencao';
 import { Cozinha } from '../view/pages/Cozinha';
+import { Financeiro } from '../view/pages/Financeiro';
 
 export function Router () {
 
