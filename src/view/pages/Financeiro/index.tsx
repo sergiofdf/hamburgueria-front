@@ -1,15 +1,29 @@
+import { Controller } from 'react-hook-form';
 import { OrderStatus, orderStatusConversion } from '../../../app/entities/Order';
 import { cn } from '../../../app/utils/cn';
 import { formatCurrency } from '../../../app/utils/formatCurrency';
 import { formatDate } from '../../../app/utils/formatDate';
 import { Spinner } from '../../components/Spinner';
-import { useOperacaoController } from '../Dashboard/useOperacaoController';
+import { DatePickerInput } from '../../components/DatePickerInput';
+import { Button } from '../../components/Button';
+import { useFinanceOrdersController } from './useFinanceOrdersController';
+import { useEffect } from 'react';
 
 export function Financeiro() {
 
-  const { orders, isLoading } = useOperacaoController();
+  const {
+    control,
+    ordersFiltered,
+    isLoading,
+    errors,
+    handleFilter,
+  } = useFinanceOrdersController();
 
-  const ordersFinishedCancelled = orders.filter( order => order.status == OrderStatus.FINISHED || order.status == OrderStatus.CANCELLED );
+  useEffect(()=>{
+    handleFilter();
+  }, []);
+
+  const ordersFinishedCancelled = ordersFiltered.filter( order => order.status == OrderStatus.FINISHED || order.status == OrderStatus.CANCELLED );
 
   const total = ordersFinishedCancelled.reduce((acc, curr) => {
     if(curr.status == OrderStatus.CANCELLED){
@@ -28,6 +42,38 @@ export function Financeiro() {
           <Spinner className='w-12 h-12 fill-red-500'/>
         </div>
       )}
+      <form onSubmit={handleFilter} className='w-full flex items-center justify-center gap-3'>
+        <Controller
+          control={control}
+          name="initialDate"
+          defaultValue={new Date()}
+          render={({ field: { value, onChange } }) => (
+            <DatePickerInput
+              label="Data Inicial"
+              error={errors.initialDate?.message}
+              value={value}
+              onChange={onChange}
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="endDate"
+          defaultValue={new Date()}
+          render={({ field: { value, onChange } }) => (
+            <DatePickerInput
+              label="Data Final"
+              error={errors.endDate?.message}
+              value={value}
+              onChange={onChange}
+            />
+          )}
+        />
+        <Button type="submit" className="w-[100px]">
+          Filtrar
+        </Button>
+      </form>
       <div className='flex items-center justify-center w-full mt-10'>
         {(hasOrders && !isLoading) && (
           <table className='border-2 border-white rounded-lg w-[90%] h-auto border-separate block'>
