@@ -1,13 +1,26 @@
 import { Link, Outlet } from 'react-router-dom';
 import { Logo } from './Logo';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export function Header() {
 
-  const [operacaoActive, setOperacaoActive] = useState(true);
+  const [operacaoActive, setOperacaoActive] = useState(false);
   const [cozinhaActive, setCozinhaActive] = useState(false);
   const [financeiroActive, setFinanceiroActive] = useState(false);
   const [manutencaoActive, setManutencaoActive] = useState(false);
+
+  useEffect(() => {
+    const path = window.location.pathname;
+    if(path.includes('cozinha')){
+      setCozinhaActive(true);
+    } else if(path.includes('financeiro')) {
+      setFinanceiroActive(true);
+    } else if(path.includes('manutencao')) {
+      setManutencaoActive(true);
+    } else {
+      setOperacaoActive(true);
+    }
+  }, []);
 
   function inactivateAllStates(){
     setOperacaoActive(false);
@@ -51,7 +64,7 @@ export function Header() {
               Financeiro
             </span>
           </Link>
-          <Link to='/manutencao'>
+          <Link to='/manutencao/produtos'>
             <span
               className={manutencaoActive ? 'text-red-500' : 'text-white'} onClick={()=>{
                 inactivateAllStates();

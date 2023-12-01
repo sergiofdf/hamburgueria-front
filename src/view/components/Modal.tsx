@@ -11,7 +11,7 @@ export function Modal({ open, children, onClose }: ModalProps) {
     <Dialog.Root open={open} onOpenChange={onClose}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-gray-500/50 backdrop-blur-sm transition-opacity"/>
-        <Dialog.Content className='fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-full max-w-[480px] rounded-lg p-8 shadow-lg outline-none min-h-[200px]'>
+        <Dialog.Content className='fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-full max-w-[640px] rounded-lg p-8 shadow-lg outline-none min-h-[200px]'>
           {children}
         </Dialog.Content>
       </Dialog.Portal >

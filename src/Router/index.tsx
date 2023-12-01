@@ -7,7 +7,8 @@ import { Header } from '../view/components/Header';
 import { Operacao } from '../view/pages/Dashboard';
 import { Cozinha } from '../view/pages/Cozinha';
 import { Financeiro } from '../view/pages/Financeiro';
-import { Manutencao } from '../view/pages/Manutencao';
+import { HeaderManutencao } from '../view/pages/Manutencao/components/HeaderManutencao';
+import { ManutencaoProdutos } from '../view/pages/Manutencao/ManutencaoProdutos';
 
 export function Router () {
 
@@ -26,7 +27,9 @@ export function Router () {
             <Route path="/" element={<Operacao />}/>
             <Route path="/cozinha" element={<Cozinha />} />
             <Route path="/financeiro" element={<Financeiro />} />
-            <Route path="/manutencao" element={<Manutencao />} />
+            <Route element={<HeaderManutencao />}>
+              <Route path="/manutencao/produtos" element={<ManutencaoProdutos />} />
+            </Route>
           </Route>
         </Route>
       </Routes>

@@ -1,5 +1,5 @@
 import { Link, Outlet } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export function HeaderManutencao() {
 
@@ -15,51 +15,62 @@ export function HeaderManutencao() {
     setUsuariosActive(false);
   }
 
+  useEffect(() => {
+    const path = window.location.pathname;
+    if(path.includes('categorias')){
+      setCategoriasActive(true);
+    } else if(path.includes('pedidos')) {
+      setPedidosActive(true);
+    } else if(path.includes('usuarios')) {
+      setUsuariosActive(true);
+    } else {
+      setProdutosActive(true);
+    }
+  }, []);
+
   return(
     <>
-      <div className='w-full h-[112px] block sm:flex sm:justify-between sm:items-center sm:px-8 px-2'>
-        <div className='flex justify-around sm:justify-between items-center lg:w-[50%] sm:w-[70%] w-full font-bold sm:text-base md:text-2xl text-xs'>
-          <Link to='/manutencao/produtos'>
-            <span
-              className={produtosActive ? 'text-red-500' : 'text-white'} onClick={()=>{
-                inactivateAllStates();
-                setProdutosActive(true);
-              }}
-            >
+      <div className='w-full h-[112px] flex justify-between sm:justify-around sm:text-2xl sm:font-bold items-center px-8'>
+        <Link to='/manutencao/produtos'>
+          <span
+            className={produtosActive ? 'text-red-500' : 'text-white'} onClick={()=>{
+              inactivateAllStates();
+              setProdutosActive(true);
+            }}
+          >
               Produtos
-            </span>
-          </Link>
-          <Link to='/manutencao/categorias'>
-            <span
-              className={categoriasActive ? 'text-red-500' : 'text-white'} onClick={()=>{
-                inactivateAllStates();
-                setCategoriasActive(true);
-              }}
-            >
+          </span>
+        </Link>
+        <Link to='/manutencao/categorias'>
+          <span
+            className={categoriasActive ? 'text-red-500' : 'text-white'} onClick={()=>{
+              inactivateAllStates();
+              setCategoriasActive(true);
+            }}
+          >
               Categorias
-            </span>
-          </Link>
-          <Link to='/manutencao/pedidos'>
-            <span
-              className={pedidosActive ? 'text-red-500' : 'text-white'} onClick={()=>{
-                inactivateAllStates();
-                setPedidosActive(true);
-              }}
-            >
+          </span>
+        </Link>
+        <Link to='/manutencao/pedidos'>
+          <span
+            className={pedidosActive ? 'text-red-500' : 'text-white'} onClick={()=>{
+              inactivateAllStates();
+              setPedidosActive(true);
+            }}
+          >
               Pedidos
-            </span>
-          </Link>
-          <Link to='/manutencao/usuarios'>
-            <span
-              className={usuariosActive ? 'text-red-500' : 'text-white'} onClick={()=>{
-                inactivateAllStates();
-                setUsuariosActive(true);
-              }}
-            >
+          </span>
+        </Link>
+        <Link to='/manutencao/usuarios'>
+          <span
+            className={usuariosActive ? 'text-red-500' : 'text-white'} onClick={()=>{
+              inactivateAllStates();
+              setUsuariosActive(true);
+            }}
+          >
               Usuários
-            </span>
-          </Link>
-        </div>
+          </span>
+        </Link>
       </div>
       <Outlet />
     </>
