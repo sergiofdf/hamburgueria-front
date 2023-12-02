@@ -4,21 +4,36 @@ import { Spinner } from '../../../components/Spinner';
 import { formatCurrency } from '../../../../app/utils/formatCurrency';
 import { ConfirmationModal } from '../components/ConfirmationModal';
 import { useState } from 'react';
+import { EditProductModal } from './components/EditProductModal';
+import { Product } from '../../../../app/entities/Product';
 
 export function ManutencaoProdutos() {
 
+  const [ product, setProduct ] = useState<Product | undefined>(undefined);
   const [ itemId, setItemId ] = useState<number | undefined>(undefined);
   const [ itemName, setItemName ] = useState<string | undefined>(undefined);
-  const [ isModalVisible, setIsModalVisible ] = useState(false);
+  const [ isEditModalVisible, setIsEditModalVisible ] = useState(false);
+  const [ isDeleteModalVisible, setIsDeleteModalVisible ] = useState(false);
+
+  async function handleOpenEditModal(id: number, item: Product) {
+    setItemId(id);
+    setProduct(item);
+    setIsEditModalVisible(true);
+  }
+
+  async function handleEditCloseModal() {
+    setIsEditModalVisible(false);
+  }
+
 
   async function handleOpenConfirmationModal(id: number, itemName: string) {
     setItemId(id);
     setItemName(itemName);
-    setIsModalVisible(true);
+    setIsDeleteModalVisible(true);
   }
 
-  async function handleCloseModal() {
-    setIsModalVisible(false);
+  async function handleDeleteCloseModal() {
+    setIsDeleteModalVisible(false);
   }
 
   const { products, isFetching: isLoading } = useProducts();
@@ -27,7 +42,8 @@ export function ManutencaoProdutos() {
 
   return(
     <>
-      <ConfirmationModal visible={isModalVisible} itemId={itemId} itemName={itemName} onClose={handleCloseModal} />
+      <EditProductModal visible={isEditModalVisible} product={product} onClose={handleEditCloseModal} />
+      <ConfirmationModal visible={isDeleteModalVisible} itemId={itemId} itemName={itemName} onClose={handleDeleteCloseModal} />
       {isLoading && (
         <div className='w-full h-full flex items-center justify-center translate-y-[-120px]'>
           <Spinner className='w-12 h-12 fill-red-500'/>
@@ -56,7 +72,13 @@ export function ManutencaoProdutos() {
                     <td className='hidden md:block'>{product.category_id}</td>
                     <td><img src={`http://localhost:3000/products/getImage/${product.productId}`} alt={product.name} width="24px"/></td>
                     <td className='flex gap-2 md:gap-4'>
-                      <button className='text-amber-400 hover:text-amber-300 transition-all'><Pencil1Icon className='h-5 w-5 md:h-8 md:w-8'/></button>
+                      <button
+                        className='text-amber-400 hover:text-amber-300 transition-all'
+                        onClick={() => handleOpenEditModal(product.productId, product)}
+                      >
+                        <Pencil1Icon className='h-5 w-5 md:h-8 md:w-8'/>
+                      </button>
+
                       <button
                         className='text-red-500 hover:text-red-300 transition-all'
                         onClick={() => handleOpenConfirmationModal(product.productId, product.name)}
