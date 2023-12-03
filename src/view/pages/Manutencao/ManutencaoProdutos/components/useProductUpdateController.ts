@@ -5,29 +5,41 @@ import { z } from 'zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { productsService } from '../../../../../app/services/productsService';
 import { Product } from '../../../../../app/entities/Product';
+import { useEffect } from 'react';
 
 const schema = z.object({
   name: z.string().min(1, 'O nome não pode ser vazio'),
   description: z.string().min(1, 'A descrição não pode ser vazia'),
   size: z.string().min(1, 'A dimensão não pode ser vazia'),
-  price: z.number().min(1, 'O valor não pode ser vazio'),
+  price: z.coerce.number(),
+  category_id: z.coerce.number(),
+  //category_id: z.number().min(1, 'O id da categoria não pode ser vazio'),
   imageUrl: z.string(),
-  category_id: z.number().min(1, 'O id da categoria não pode ser vazio'),
 });
 
 type FormData = z.infer<typeof schema>;
 
-export function useProductUpdateController(product: Product) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function useProductUpdateController(product: Product | undefined, onClose: any) {
+
+  useEffect(() => {
+    reset(product);
+  }, [product]);
 
   const {
     register,
     handleSubmit: hookFormSubmit,
     formState: { errors },
-    control,
+    reset
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: product.name,
+      name: product?.name,
+      description: product?.description,
+      size: product?.size,
+      price: product?.price,
+      category_id: product?.category_id,
+      imageUrl: product?.imageUrl,
     }
   });
 
@@ -38,15 +50,18 @@ export function useProductUpdateController(product: Product) {
   } = useMutation(productsService.updateProduct);
 
   const handleSubmit = hookFormSubmit(async (data) => {
+    console.log(data);
     try {
       await updateProduct({
-        id: product.productId,
+        id: product!.productId,
         ...data,
       });
 
       queryClient.invalidateQueries({ queryKey: ['listProducts'] });
+      onClose();
       toast.success('O item foi editado com sucesso!');
     } catch {
+      onClose();
       toast.error('Erro ao salvar as alterações!');
     }
   });
@@ -56,7 +71,6 @@ export function useProductUpdateController(product: Product) {
     register,
     isLoading,
     errors,
-    control
   };
 
 }
