@@ -3,6 +3,7 @@ import { Button } from '../../../../components/Button';
 import { Product } from '../../../../../app/entities/Product';
 import { useProductUpdateController } from './useProductUpdateController';
 import { InputFundoBranco } from '../../../../components/InputFundoBranco';
+import { Cross2Icon } from '@radix-ui/react-icons';
 
 interface EditProductModalProps {
   visible: boolean;
@@ -17,6 +18,8 @@ export function EditProductModal({ product, visible, onClose }: EditProductModal
     register,
     isLoading,
     errors,
+    handleFileChange,
+    file
   } = useProductUpdateController(product, onClose);
 
   return (
@@ -25,6 +28,16 @@ export function EditProductModal({ product, visible, onClose }: EditProductModal
       onClose={onClose}
     >
       <form onSubmit={handleSubmit}>
+
+        <header className='flex items-center justify-between text-2xl'>
+          <span>Edição produto</span>
+          <button
+            className='h-8 w-8 flex items-center justify-center bg-red-500 rounded-sm'
+            onClick={onClose}
+          >
+            <Cross2Icon className='h-8 w-8 text-white'/>
+          </button>
+        </header>
 
         <div className="mt-10 flex flex-col gap-4">
           <InputFundoBranco
@@ -69,13 +82,22 @@ export function EditProductModal({ product, visible, onClose }: EditProductModal
             {...register('category_id')}
           />
 
-          <InputFundoBranco
-            className='text-gray-600 border-b-black'
-            type="text"
-            placeholder="Imagem"
-            error={errors.imageUrl?.message}
-            {...register('imageUrl')}
-          />
+          <div className='flex items-center justify-between gap-4'>
+            {!file &&
+              <img src={`http://localhost:3000/products/getImage/${product?.productId}`} alt={product?.name} width="24px"/>
+            }
+
+            <input type='file' onChange={handleFileChange}/>
+            <InputFundoBranco
+              className='text-gray-600 border-b-black'
+              type="text"
+              placeholder="Imagem"
+              error={errors.imageUrl?.message}
+              {...register('imageUrl')}
+            />
+          </div>
+
+
 
         </div>
 

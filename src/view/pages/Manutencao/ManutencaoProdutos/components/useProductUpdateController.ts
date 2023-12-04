@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { productsService } from '../../../../../app/services/productsService';
 import { Product } from '../../../../../app/entities/Product';
-import { useEffect } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 const schema = z.object({
   name: z.string().min(1, 'O nome não pode ser vazio'),
@@ -30,7 +30,8 @@ export function useProductUpdateController(product: Product | undefined, onClose
     register,
     handleSubmit: hookFormSubmit,
     formState: { errors },
-    reset
+    reset,
+    setValue
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -49,9 +50,17 @@ export function useProductUpdateController(product: Product | undefined, onClose
     mutateAsync: updateProduct,
   } = useMutation(productsService.updateProduct);
 
+  const {
+    mutateAsync: uploadNewImage,
+  } = useMutation(productsService.uploadNewProductImage);
+
   const handleSubmit = hookFormSubmit(async (data) => {
     console.log(data);
     try {
+      if(fileChanged && file){
+        const newUploaded = (await uploadNewImage({id: product!.productId, file})).data;
+        data.imageUrl = newUploaded.imagePath;
+      }
       await updateProduct({
         id: product!.productId,
         ...data,
@@ -66,11 +75,24 @@ export function useProductUpdateController(product: Product | undefined, onClose
     }
   });
 
+  const [file, setFile] = useState<File>();
+  const [fileChanged, setFileChanged] = useState(false);
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setFile(e.target.files[0]);
+      setFileChanged(true);
+      setValue('imageUrl', e.target.files[0].name);
+    }
+  };
+
   return {
     handleSubmit,
     register,
     isLoading,
     errors,
+    handleFileChange,
+    file
   };
 
 }

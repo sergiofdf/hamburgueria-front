@@ -18,6 +18,7 @@ export function useManutencaoProdutosController() {
   }
 
   function handleCloseEditModal() {
+    setProductEditing(undefined);
     setIsEditModalVisible(false);
   }
 
