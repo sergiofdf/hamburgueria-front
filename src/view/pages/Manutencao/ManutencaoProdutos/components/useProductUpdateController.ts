@@ -13,7 +13,6 @@ const schema = z.object({
   size: z.string().min(1, 'A dimensão não pode ser vazia'),
   price: z.coerce.number(),
   category_id: z.coerce.number(),
-  //category_id: z.number().min(1, 'O id da categoria não pode ser vazio'),
   imageUrl: z.string(),
 });
 
@@ -55,7 +54,6 @@ export function useProductUpdateController(product: Product | undefined, onClose
   } = useMutation(productsService.uploadNewProductImage);
 
   const handleSubmit = hookFormSubmit(async (data) => {
-    console.log(data);
     try {
       if(fileChanged && file){
         const newUploaded = (await uploadNewImage({id: product!.productId, file})).data;

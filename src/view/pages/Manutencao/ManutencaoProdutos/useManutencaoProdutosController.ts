@@ -9,8 +9,19 @@ export function useManutencaoProdutosController() {
   const [ productEditing, setProductEditing ] = useState<Product | undefined>(undefined);
   const [ itemId, setItemId ] = useState<number | undefined>(undefined);
   const [ itemName, setItemName ] = useState<string | undefined>(undefined);
+  const [ isAddModalVisible, setIsAddModalVisible ] = useState(false);
   const [ isEditModalVisible, setIsEditModalVisible ] = useState(false);
   const [ isDeleteModalVisible, setIsDeleteModalVisible ] = useState(false);
+
+  function handleOpenAddModal() {
+    setProductEditing(undefined);
+    setIsAddModalVisible(true);
+  }
+
+  function handleCloseAddModal() {
+    setProductEditing(undefined);
+    setIsAddModalVisible(false);
+  }
 
   function handleOpenEditModal(item: Product) {
     setProductEditing(item);
@@ -35,6 +46,8 @@ export function useManutencaoProdutosController() {
   return {
     products,
     isLoading,
+    handleOpenAddModal,
+    handleCloseAddModal,
     handleOpenEditModal,
     handleCloseEditModal,
     handleOpenConfirmationModal,
@@ -42,6 +55,7 @@ export function useManutencaoProdutosController() {
     productEditing,
     itemId,
     itemName,
+    isAddModalVisible,
     isEditModalVisible,
     isDeleteModalVisible
   };
