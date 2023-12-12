@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { z } from 'zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { productsService } from '../../../../../app/services/productsService';
+import { ChangeEvent, useState } from 'react';
 
 const schema = z.object({
   name: z.string().min(1, 'O nome não pode ser vazio'),
@@ -22,6 +23,7 @@ export function useProductAddController(onClose: any) {
   const {
     register,
     reset,
+    setValue,
     handleSubmit: hookFormSubmit,
     formState: { errors },
   } = useForm<FormData>({
@@ -34,20 +36,39 @@ export function useProductAddController(onClose: any) {
     mutateAsync: createProduct,
   } = useMutation(productsService.createProduct);
 
+  const {
+    mutateAsync: uploadNewImage,
+  } = useMutation(productsService.uploadNewProductImage);
+
+  const [file, setFile] = useState<File>();
+  const [fileChanged, setFileChanged] = useState(false);
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setFile(e.target.files[0]);
+      setFileChanged(true);
+      setValue('imageUrl', e.target.files[0].name);
+    }
+  };
+
   const handleSubmit = hookFormSubmit(async (data) => {
     try {
 
-      await createProduct({
+      const createdProduct = await createProduct({
         ...data,
       });
 
-      queryClient.invalidateQueries({ queryKey: ['listProducts'] });
+      if(createdProduct && fileChanged && file){
+        await uploadNewImage({id: createdProduct.productId, file});
+      }
+
+      await queryClient.invalidateQueries({ queryKey: ['listProducts'] });
       reset();
       onClose();
-      toast.success('O item foi editado com sucesso!');
+      toast.success('O item foi cadastrado com sucesso!');
     } catch {
       onClose();
-      toast.error('Erro ao salvar as alterações!');
+      toast.error('Erro ao cadastrar o item!');
     }
   });
 
@@ -56,6 +77,8 @@ export function useProductAddController(onClose: any) {
     register,
     isLoading,
     errors,
+    handleFileChange,
+    file
   };
 
 }

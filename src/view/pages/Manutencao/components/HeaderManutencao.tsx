@@ -16,6 +16,7 @@ export function HeaderManutencao() {
   }
 
   useEffect(() => {
+    inactivateAllStates();
     const path = window.location.pathname;
     if(path.includes('categorias')){
       setCategoriasActive(true);

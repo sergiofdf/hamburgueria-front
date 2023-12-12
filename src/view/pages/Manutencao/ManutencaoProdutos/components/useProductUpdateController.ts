@@ -64,7 +64,7 @@ export function useProductUpdateController(product: Product | undefined, onClose
         ...data,
       });
 
-      queryClient.invalidateQueries({ queryKey: ['listProducts'] });
+      await queryClient.invalidateQueries({ queryKey: ['listProducts'] });
       onClose();
       toast.success('O item foi editado com sucesso!');
     } catch {

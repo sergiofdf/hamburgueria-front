@@ -5,6 +5,7 @@ import { productsService } from '../../../../app/services/productsService';
 import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
+import { categoriesService } from '../../../../app/services/categoriesService';
 
 interface ConfirmationModalProps {
   visible: boolean;
@@ -25,13 +26,27 @@ export function ConfirmationModal({ itemId, itemName, visible, onClose }: Confir
       try {
         setIsLoadingDelete(true);
         await productsService.deleteProduct(itemId!);
-        queryClient.invalidateQueries({ queryKey: ['listProducts'] });
+        await queryClient.invalidateQueries({ queryKey: ['listProducts'] });
         setIsLoadingDelete(false);
         toast.success('Produto deletado com sucesso!');
         onClose?.();
       } catch (error) {
         setIsLoadingDelete(false);
         toast.error('Erro ao deletar o produto!');
+        onClose?.();
+      }
+    }
+    else if (path.includes('categorias')){
+      try {
+        setIsLoadingDelete(true);
+        await categoriesService.deleteCategory(itemId!);
+        await queryClient.invalidateQueries({ queryKey: ['listCategories'] });
+        setIsLoadingDelete(false);
+        toast.success('Categoria deletada com sucesso!');
+        onClose?.();
+      } catch (error) {
+        setIsLoadingDelete(false);
+        toast.error('Erro ao deletar a categoria!');
         onClose?.();
       }
     }

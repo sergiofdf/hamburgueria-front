@@ -9,6 +9,8 @@ import { Cozinha } from '../view/pages/Cozinha';
 import { Financeiro } from '../view/pages/Financeiro';
 import { HeaderManutencao } from '../view/pages/Manutencao/components/HeaderManutencao';
 import { ManutencaoProdutos } from '../view/pages/Manutencao/ManutencaoProdutos';
+import { ManutencaoCategorias } from '../view/pages/Manutencao/ManutencaoCategorias';
+import { ManutencaoPedidos } from '../view/pages/Manutencao/ManutencaoPedidos';
 
 export function Router () {
 
@@ -29,6 +31,8 @@ export function Router () {
             <Route path="/financeiro" element={<Financeiro />} />
             <Route element={<HeaderManutencao />}>
               <Route path="/manutencao/produtos" element={<ManutencaoProdutos />} />
+              <Route path="/manutencao/categorias" element={<ManutencaoCategorias />} />
+              <Route path="/manutencao/pedidos" element={<ManutencaoPedidos />} />
             </Route>
           </Route>
         </Route>

@@ -11,3 +11,10 @@ export interface OrderProduct {
   }
   finished?: boolean;
 }
+
+
+export interface OrderProductCreation {
+  order_id: number;
+  quantity: number;
+  product_id: number;
+}

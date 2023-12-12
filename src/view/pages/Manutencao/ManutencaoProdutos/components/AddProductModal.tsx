@@ -15,7 +15,8 @@ export function AddProductModal({ visible, onClose }: AddProductModalProps) {
     handleSubmit,
     register,
     isLoading,
-    errors
+    errors,
+    handleFileChange,
   } = useProductAddController(onClose);
 
   return (
@@ -79,6 +80,7 @@ export function AddProductModal({ visible, onClose }: AddProductModalProps) {
           />
 
           <div className='flex items-center justify-between gap-4'>
+            <input type='file' onChange={handleFileChange}/>
             <InputFundoBranco
               className='text-gray-600 border-b-black'
               type="text"
@@ -91,7 +93,7 @@ export function AddProductModal({ visible, onClose }: AddProductModalProps) {
         </div>
 
         <Button type="submit" className="w-full mt-6" isLoading={isLoading}>
-          Salvar
+          Cadastrar
         </Button>
       </form>
     </Modal>
