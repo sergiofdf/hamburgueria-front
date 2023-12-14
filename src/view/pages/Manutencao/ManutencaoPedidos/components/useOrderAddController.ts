@@ -56,10 +56,10 @@ export function useOrderAddController(onClose: any) {
       await queryClient.invalidateQueries({ queryKey: ['ordersList'] });
       reset();
       onClose();
-      toast.success('O item foi cadastrado com sucesso!');
+      toast.success('Pedido cadastrado com sucesso!');
     } catch {
       onClose();
-      toast.error('Erro ao cadastrar o item!');
+      toast.error('Erro ao cadastrar o pedido!');
     }
   });
 

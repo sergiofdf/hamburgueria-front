@@ -6,6 +6,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
 import { categoriesService } from '../../../../app/services/categoriesService';
+import { ordersService } from '../../../../app/services/ordersService';
 
 interface ConfirmationModalProps {
   visible: boolean;
@@ -47,6 +48,19 @@ export function ConfirmationModal({ itemId, itemName, visible, onClose }: Confir
       } catch (error) {
         setIsLoadingDelete(false);
         toast.error('Erro ao deletar a categoria!');
+        onClose?.();
+      }
+    } else if (path.includes('pedidos')){
+      try {
+        setIsLoadingDelete(true);
+        await ordersService.removeOrder(itemId!);
+        await queryClient.invalidateQueries({ queryKey: ['ordersList'] });
+        setIsLoadingDelete(false);
+        toast.success('Pedido deletado com sucesso!');
+        onClose?.();
+      } catch (error) {
+        setIsLoadingDelete(false);
+        toast.error('Erro ao deletar o pedido!');
         onClose?.();
       }
     }

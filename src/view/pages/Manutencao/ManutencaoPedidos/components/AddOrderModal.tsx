@@ -16,6 +16,7 @@ export function AddOrderModal({ visible, onClose }: AddOrderModalProps) {
     register,
     isLoading,
     errors,
+    isLoadingProductInOrder
   } = useOrderAddController(onClose);
 
   return (
@@ -62,7 +63,7 @@ export function AddOrderModal({ visible, onClose }: AddOrderModalProps) {
 
         </div>
 
-        <Button type="submit" className="w-full mt-6" isLoading={isLoading}>
+        <Button type="submit" className="w-full mt-6" isLoading={isLoading || isLoadingProductInOrder}>
           Cadastrar
         </Button>
       </form>

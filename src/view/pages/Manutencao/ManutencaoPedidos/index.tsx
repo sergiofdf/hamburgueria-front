@@ -6,6 +6,7 @@ import { formatDate } from '../../../../app/utils/formatDate';
 import { useManutencaoPedidosController } from './useManutencaoPedidosController';
 import { formatCurrency } from '../../../../app/utils/formatCurrency';
 import { AddOrderModal } from './components/AddOrderModal';
+import { EditOrderModal } from './components/EditOrderModal';
 
 export function ManutencaoPedidos() {
   const {
@@ -14,14 +15,14 @@ export function ManutencaoPedidos() {
     handleOpenAddModal,
     handleCloseAddModal,
     handleOpenEditModal,
-    //handleCloseEditModal,
+    handleCloseEditModal,
     handleOpenConfirmationModal,
     handleCloseDeleteModal,
-    //orderEditing,
+    orderEditing,
     itemId,
     itemName,
     isAddModalVisible,
-    //isEditModalVisible,
+    isEditModalVisible,
     isDeleteModalVisible
   } = useManutencaoPedidosController();
 
@@ -30,7 +31,7 @@ export function ManutencaoPedidos() {
   return(
     <>
       <AddOrderModal visible={isAddModalVisible} onClose={handleCloseAddModal} />
-      {/* <EditOrderModal visible={isEditModalVisible} category={orderEditing} onClose={handleCloseEditModal} /> */}
+      <EditOrderModal visible={isEditModalVisible} order={orderEditing} onClose={handleCloseEditModal} />
       <ConfirmationModal visible={isDeleteModalVisible} itemId={itemId} itemName={itemName} onClose={handleCloseDeleteModal} />
       {isLoading && (
         <div className='w-full h-full flex items-center justify-center translate-y-[-120px]'>
